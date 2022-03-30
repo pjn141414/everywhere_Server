@@ -1,6 +1,7 @@
 import { type } from "os";
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Apply from "./apply";
+import Night from "./night";
 import Place from "./place";
 
 @Entity('room')
@@ -16,4 +17,7 @@ export default class Room {
 
   @OneToOne(type => Place, place => place.room)
   place!: Place;
+
+  @OneToOne(type => Night, night => night.room)
+  night!: Night;
 }

@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  RelationId
+} from "typeorm";
+import User from "./user";
 
 @Entity('apply')
 export default class Apply {
@@ -11,10 +20,18 @@ export default class Apply {
   @Column({ name: 'form_file' })
   formFile!: string;
 
-  // apply_student_idx
-
   @Column({ name: 'room' })
   room!: number;
+
+  @RelationId((apply: Apply) => apply.student)
+  studentId!: string;
+
+  @JoinColumn({ name: 'fk_student_id' })
+  @ManyToOne(type => User, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  student!: User;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;

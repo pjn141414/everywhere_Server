@@ -1,5 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import Apply from "./apply";
 import Night from "./night";
+import Place from "./place";
 
 @Entity('user')
 export default class User {
@@ -29,4 +31,10 @@ export default class User {
 
   @OneToMany(type => Night, night => night.user)
   night!: Night[];
+
+  @OneToMany(type => Apply, apply => apply.student)
+  apply!: Apply[];
+
+  @OneToMany(type => Place, place => place.teacher)
+  place!: Place;
 }

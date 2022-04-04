@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId
 } from "typeorm";
+import Place from "./place";
 import User from "./user";
 
 @Entity('apply')
@@ -35,4 +37,7 @@ export default class Apply {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
+
+  @OneToOne(type => Place, place => place.apply)
+  place!: Place;
 }

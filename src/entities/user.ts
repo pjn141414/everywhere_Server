@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn
+} from "typeorm";
 import Apply from "./apply";
 import Night from "./night";
 import Place from "./place";
@@ -35,6 +41,6 @@ export default class User {
   @OneToMany(type => Apply, apply => apply.student)
   apply!: Apply[];
 
-  @OneToMany(type => Place, place => place.teacher)
+  @OneToOne(type => Place, place => place.teacher)
   place!: Place;
 }

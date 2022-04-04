@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   RelationId
 } from "typeorm";
+import Apply from "./apply";
 import User from "./user";
 
 @Entity('place')
@@ -14,8 +15,18 @@ export default class Place {
   @PrimaryGeneratedColumn({ name: 'idx' })
   idx!: number;
 
-  // apply_idx 
+  // apply idx
+  @RelationId((place: Place) => place.apply)
+  applyIdx!: number;
 
+  @JoinColumn({ name: 'fk_apply_idx' })
+  @OneToOne(type => Apply, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  apply!: Apply;
+
+  // place teacher id
   @RelationId((place: Place) => place.teacher)
   teacherId!: string;
 

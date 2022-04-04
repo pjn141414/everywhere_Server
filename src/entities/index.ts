@@ -1,11 +1,10 @@
 import Apply from "./apply";
 import Night from "./night";
 import Place from "./place";
-import Room from "./room";
-
+import User from "./user";
 export default [
   Apply,
-  Room,
   Place,
   Night,
+  User,
 ]

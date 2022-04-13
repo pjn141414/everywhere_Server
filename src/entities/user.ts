@@ -11,6 +11,7 @@ import Place from "./place";
 
 @Entity('user')
 export default class User {
+  // dodam user unique_id
   @PrimaryColumn({ name: 'id' })
   id!: string;
 

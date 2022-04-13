@@ -1,15 +1,18 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AxiosResponse } from 'axios';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import User from 'src/entities/user';
-import { ILoginRes, ITokenReq } from 'src/interfaces/IAuth';
-import DauthLoginDto from './dto/DathLoginDto';
+import { ITokenReq } from 'src/interfaces/auth/IAuth';
+import { TokenService } from '../token/token.service';
+import DauthLoginDto from './dto/DauthLogin.dto';
+import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly userRepository: UserRepository,
+    private readonly tokenService: TokenService,
     private configService: ConfigService,
     private httpService: HttpService,
   ) { }
@@ -32,15 +35,47 @@ export class AuthService {
       )
     );
 
-    const getUser = await this.httpService.get(
-      'http://open.dodam.b1nd.com/api/user',
-      {
-        headers: {
-          Authrization: 'Bearer ' + getToken.data.access_token,
+    const getUser = await lastValueFrom(
+      this.httpService.get(
+        'http://open.dodam.b1nd.com/api/user',
+        {
+          headers: {
+            Authorization: 'Bearer ' + getToken.data.access_token,
+          },
         },
-      },
+      )
     );
 
+    let user: User | undefined = await this.userRepository.
+      getUserById(getUser.data.uniqueId);
 
+    const userData = getUser.data.data;
+    if (user === undefined) {
+      user = this.userRepository.create({
+        id: userData.uniqueId,
+        name: userData.name,
+        email: userData.email,
+        grade: userData.grade,
+        class: userData.room,
+        number: userData.number,
+        accessLevel: userData.accessLevel,
+        profile_image: userData.profileImage,
+      });
+
+      await this.userRepository.save(user);
+    }
+
+    const accessToken: string = this.tokenService.generateAccessToken(user.id);
+
+    const refreshToken: string = this.tokenService.generateRefreshToken(user.id);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
-}
+
+  public getUserById(id: string) {
+    return this.userRepository.getUserById(id);
+  }
+};

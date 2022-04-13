@@ -1,7 +1,6 @@
 import { Controller, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/lib/upload/multerOption';
-import AuthGuard from 'src/middleware/auth.middleware';
+import { multerOptions } from 'src/lib/upload/multerOption';;
 import { UploadService } from './upload.service';
 
 @Controller('upload')
@@ -13,7 +12,7 @@ export class UploadController {
   @UseInterceptors(FilesInterceptor('files', null, multerOptions))
 
   @Post('/')
-  @UseGuards(new AuthGuard())
+  @UseGuards()
   public uploadFiles(
     @UploadedFiles() files: File[],
   ) {

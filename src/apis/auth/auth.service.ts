@@ -59,7 +59,7 @@ export class AuthService {
         class: userData.room,
         number: userData.number,
         accessLevel: userData.accessLevel,
-        profile_image: userData.profileImage,
+        profileImage: userData.profileImage,
       });
 
       await this.userRepository.save(user);

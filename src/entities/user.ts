@@ -34,7 +34,7 @@ export default class User {
   accessLevel!: number;
 
   @Column({ name: 'profile_image' })
-  profile_image!: string;
+  profileImage!: string;
 
   @OneToMany(type => Night, night => night.user)
   night!: Night[];

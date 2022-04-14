@@ -15,7 +15,7 @@ export default class Place {
   @PrimaryGeneratedColumn({ name: 'idx' })
   idx!: number;
 
-  // apply idx
+  // apply id
   @RelationId((place: Place) => place.apply)
   applyIdx!: number;
 

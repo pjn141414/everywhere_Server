@@ -22,6 +22,9 @@ export default class Apply {
   @Column({ name: 'form_file' })
   formFile!: string;
 
+  @Column({ name: 'type' })
+  type!: number;
+
   @Column({ name: 'room' })
   room!: number;
 

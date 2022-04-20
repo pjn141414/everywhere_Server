@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import Apply from 'src/entities/apply';
 import Place from 'src/entities/place';
 import User from 'src/entities/user';
-import { UserRepository } from '../auth/repositories/user.repository';
 import AddLabDto from './dto/addLab.dto';
 import { ApplyRepository } from './repositories/apply.repository';
 import { PlaceRepository } from './repositories/place.repository';
@@ -12,7 +11,6 @@ export class LabService {
   constructor(
     private readonly placeRepository: PlaceRepository,
     private readonly applyRespository: ApplyRepository,
-    private readonly userRepository: UserRepository,
   ) { }
 
   /**
@@ -26,6 +24,10 @@ export class LabService {
    * @description (학생용) 자습실 신청
    */
   async addApply(user: User, data: AddLabDto): Promise<any> {
+    if (user.accessLevel !== 1) {
+      throw new BadRequestException('학생만 접근 가능합니다.');
+    }
+
     const apply = this.applyRespository.create({
       teamName: data.teamName,
       formFile: data.formFile,
@@ -54,4 +56,4 @@ export class LabService {
   /**
    * @description (교사용) 자습실 배치 취소
    */
-} 
+}

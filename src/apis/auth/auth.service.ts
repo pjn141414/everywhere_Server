@@ -13,7 +13,7 @@ export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly tokenService: TokenService,
-    private configService: ConfigService,
+    private readonly configService: ConfigService,
     private httpService: HttpService,
   ) { }
 

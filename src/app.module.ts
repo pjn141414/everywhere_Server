@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './apis/auth/auth.module';
+import { LabModule } from './apis/lab/lab.module';
 import { TokenModule } from './apis/token/token.module';
 import { UploadController } from './apis/upload/upload.controller';
 import { UploadService } from './apis/upload/upload.service';
@@ -12,7 +13,9 @@ import { config } from './config/ormConfig';
 import CatchException from './lib/error/catchException';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), AuthModule, ConfigModule, TokenModule],
+  imports: [TypeOrmModule.forRoot(config), AuthModule, ConfigModule.forRoot({
+    isGlobal: true
+  }), TokenModule, LabModule],
   controllers: [AppController, UploadController],
   providers: [AppService, {
     provide: APP_FILTER,

@@ -6,6 +6,7 @@ import { Token } from 'src/lib/decorators/token.decorator';
 import { AuthGuard } from 'src/lib/guard/auth.guard';
 import BaseReponse from 'src/lib/response/base.response';
 import AddApplyDto from './dto/addApply.dto';
+import AddPlaceDto from './dto/addPlace.dto';
 import { LabService } from './lab.service';
 
 @Controller('lab')
@@ -38,5 +39,14 @@ export class LabController {
     const applys: Apply[] = await this.labService.getApplyByStudent(user);
 
     return new BaseReponse(200, '특정 학생의 자습실 신청 전체 조회 성공', applys);
+  }
+
+  @Post('/place')
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  async addPlace(@Token() user: User, @Body() data: AddPlaceDto) {
+    const place = await this.labService.addPlace(user, data);
+
+    return new BaseReponse(200, '자습실 배치 성공', place);
   }
 }

@@ -2,6 +2,7 @@ import { BadRequestException, ConflictException, ForbiddenException, Injectable,
 import Apply from 'src/entities/apply';
 import Place from 'src/entities/place';
 import User from 'src/entities/user';
+import { UserRepository } from '../auth/repositories/user.repository';
 import AddApplyDto from './dto/addApply.dto';
 import AddPlaceDto from './dto/addPlace.dto';
 import { ApplyRepository } from './repositories/apply.repository';
@@ -12,6 +13,7 @@ export class LabService {
   constructor(
     private readonly placeRepository: PlaceRepository,
     private readonly applyRespository: ApplyRepository,
+    private readonly userRepository: UserRepository,
   ) { }
 
   /**
@@ -50,10 +52,10 @@ export class LabService {
   /**
    * @description (교사용) 자습실 배치
    */
-  async addTeam(user: User, data: AddPlaceDto): Promise<any> {
+  async addPlace(user: User, data: AddPlaceDto): Promise<any> {
     const { applyIdx, room }: { applyIdx: number, room: number } = data;
 
-    if (user.accessLevel !== 2 || 3) {
+    if (user.accessLevel !== 2 && user.accessLevel !== 3 && user.accessLevel !== 4) {
       throw new ForbiddenException('선생님 혹은 관리자만 접근 가능합니다.');
     }
 
@@ -68,9 +70,9 @@ export class LabService {
     }
 
     const place: Place = this.placeRepository.create({
-      apply: apply.idx,
+      apply: apply,
       room: room,
-      teacher: user.id,
+      teacher: user,
     });
 
     await this.placeRepository.save(place);

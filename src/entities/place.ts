@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   RelationId
@@ -30,8 +31,8 @@ export default class Place {
   @RelationId((place: Place) => place.teacher)
   teacherId!: string;
 
-  @JoinColumn({ name: 'fk_user_id' })
-  @OneToOne(type => User, {
+  @JoinColumn({ name: 'fk_teacher_id' })
+  @ManyToOne(type => User, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

@@ -54,6 +54,6 @@ export default class User {
   @OneToMany(type => Apply, apply => apply.student)
   apply!: Apply[];
 
-  @OneToOne(type => Place, place => place.teacher)
-  place!: Place;
+  @OneToMany(type => Place, place => place.teacher)
+  place!: Place[];
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
 import Apply from 'src/entities/apply';
 import Place from 'src/entities/place';
 import User from 'src/entities/user';
@@ -48,5 +48,14 @@ export class LabController {
     const place = await this.labService.addPlace(user, data);
 
     return new BaseReponse(200, '자습실 배치 성공', place);
+  }
+
+  @Delete('/place/:idx')
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  async deletePlace(@Token() user: User, @Param('idx') placeIdx: number) {
+    const place = await this.labService.deletePlace(user, placeIdx);
+
+    return new BaseReponse(200, '자습실 배치 삭제 성공', place);
   }
 }

@@ -79,12 +79,17 @@ export class LabService {
   }
 
   /**
-   * @description (교사용) 자습실 배치 수정
-   */
-
-  /**
    * @description (교사용) 자습실 신청 삭제
    */
+  async deletePlace(user: User, placeIdx: number): Promise<any> {
+    if (user.accessLevel !== 2 && user.accessLevel !== 3 && user.accessLevel !== 4) {
+      throw new ForbiddenException('선생님 혹은 관리자만 접근 가능합니다.');
+    }
+
+    const place: Place | undefined = await this.placeRepository.findOne(placeIdx);
+
+    await this.placeRepository.remove(place);
+  }
 
 
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
 import User from 'src/entities/user';
-import { ITokenReq } from 'src/interfaces/auth/IAuth';
+import { ILoginRes, ITokenReq } from 'src/interfaces/auth/IAuth';
 import { TokenService } from '../token/token.service';
 import DauthLoginDto from './dto/DauthLogin.dto';
 import { UserRepository } from './repositories/user.repository';
@@ -21,7 +21,7 @@ export class AuthService {
    * @description DAuth 로그인(토큰 발급/유저 조회)
    */
   //ILoginRes
-  async dauthLogin(code: DauthLoginDto): Promise<any> {
+  async dauthLogin(code: DauthLoginDto): Promise<ILoginRes> {
     const data: ITokenReq = {
       code: code.code,
       client_id: this.configService.get<string>('CLIENT_ID'),
@@ -66,7 +66,6 @@ export class AuthService {
     }
 
     const accessToken: string = this.tokenService.generateAccessToken(user.id);
-
     const refreshToken: string = this.tokenService.generateRefreshToken(user.id);
 
     return {

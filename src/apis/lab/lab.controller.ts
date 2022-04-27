@@ -5,7 +5,7 @@ import User from 'src/entities/user';
 import { Token } from 'src/lib/decorators/token.decorator';
 import { AuthGuard } from 'src/lib/guard/auth.guard';
 import BaseReponse from 'src/lib/response/base.response';
-import AddLabDto from './dto/addLab.dto';
+import AddApplyDto from './dto/addApply.dto';
 import { LabService } from './lab.service';
 
 @Controller('lab')
@@ -25,7 +25,7 @@ export class LabController {
   @Post('/')
   @HttpCode(200)
   @UseGuards(AuthGuard)
-  async addApply(@Token() user: User, @Body() data: AddLabDto) {
+  async addApply(@Token() user: User, @Body() data: AddApplyDto) {
     const apply = await this.labService.addApply(user, data);
 
     return new BaseReponse(200, '자습실 신청 성공', apply);

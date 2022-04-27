@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
-export default class AddLabDto {
+export default class AddApplyDto {
   @IsNotEmpty()
   @IsString()
   teamName!: string;

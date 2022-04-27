@@ -21,20 +21,32 @@ export default class User {
   @Column({ name: 'email' })
   email!: string;
 
-  @Column({ name: 'grade' })
-  grade!: number;
+  @Column({
+    name: 'grade',
+    nullable: true
+  })
+  grade: number;
 
-  @Column({ name: 'class' })
-  class!: number;
+  @Column({
+    name: 'class',
+    nullable: true
+  })
+  class: number;
 
-  @Column({ name: 'number' })
-  number!: number;
+  @Column({
+    name: 'number',
+    nullable: true
+  })
+  number: number;
 
   @Column({ name: 'access_level' })
   accessLevel!: number;
 
-  @Column({ name: 'profile_image' })
-  profileImage!: string;
+  @Column({
+    name: 'profile_image',
+    nullable: true
+  })
+  profileImage?: string;
 
   @OneToMany(type => Night, night => night.user)
   night!: Night[];
